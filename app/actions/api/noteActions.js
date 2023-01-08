@@ -5,10 +5,11 @@ class NoteActions {
     async saveNote(req, res){
         const title = req.body.title;
         const body = req.body.body;
+        const when = req.body.when;
 
         let note;
         try{
-            note = new Note({title, body});
+            note = new Note({title, body, when});
             await note.save();
         }catch(err){
             return res.status(422).json({message: err.message})
@@ -42,10 +43,12 @@ class NoteActions {
         const id = req.params.id
         const title = req.body.title;
         const body = req.body.body;
+        const when = req.body.when;
 
         const note = await Note.findOne({_id: id})
         note.title = title
         note.body = body
+        note.when = when
         await note.save()
 
         res.status(201).json(note)
